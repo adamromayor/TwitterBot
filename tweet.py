@@ -4,12 +4,20 @@ from tokens import *
 import pprint
 import cloud
 
-
 auth = tweepy.OAuthHandler(consumerAPI.apiKey, consumerAPI.apiSecret)
 auth.set_access_token(accessToken.accessToken, accessToken.accessTokenSecret)
 api = tweepy.API(auth)
 
 pp = pprint.PrettyPrinter(indent=1)
+# list of common words that aren't useful in analysis
+common_words = ['the', 'are', 'and', 'this', 'that', 'from', 'they', 'all', 'has',
+                'for', 'not', 'you', 'your', 'will', 'with', 'too', 'its', 'their',
+                'who', 'have', 'been', 'like', 'but', 'how', 'why', 'can', 'was',
+                'each', 'get', 'here', 'youre', 'did', 'when', 'where', 'why', 'were',
+                'thats', 'what', 'way', 'heres', 'some', 'those', 'because', 'other',
+                'them', 'sure', 'into', 'than', 'ive', 'had', 'let', 'after', 'our',
+                'there', 'about', 'out', 'also', 'back', 'his', 'her', 'even', 'any', 
+                'very', 'could', 'lot', 'them', 'would','should', 'every', 'more']
 
 
 def tweet_weather_for_today():
@@ -18,12 +26,19 @@ def tweet_weather_for_today():
     api.update_status(today_weather)
 
 
+def filter_word(character):
+    if character == '@':
+        return True
+    else:
+        return character.isalnum()
+
+
 # takes string as input
 # returns alphanumeric string
 def strip_word(word):
     if word == '':
         return word
-    alp_num = filter(str.isalnum, word)
+    alp_num = filter(filter_word, word)
     return "".join(alp_num)
 
 
@@ -55,15 +70,6 @@ def get_list_of_words(username, number_of_tweets):
 
     # deletes all empty strings and words length 2 or shorter from list
     word_list = [x for x in word_list if (x != '' and len(x) > 2)]
-
-    # list of common words that aren't useful in analysis
-    common_words = ['the', 'are', 'and', 'this', 'that', 'from', 'they', 'all', 'has',
-                    'for', 'not', 'you', 'your', 'will', 'with', 'too', 'its', 'their',
-                    'who', 'have', 'been', 'like', 'but', 'how', 'why', 'can', 'was',
-                    'each', 'get', 'here', 'youre', 'did', 'when', 'where', 'why', 'were',
-                    'thats', 'what', 'way', 'heres', 'some', 'those', 'because', 'other',
-                    'them', 'sure', 'into', 'than', 'ive', 'had', 'let', 'after', 'our',
-                    'there']
 
     # deletes all common words
     word_list = [x for x in word_list + common_words if x not in common_words]
@@ -147,13 +153,26 @@ def create_csv_words_tweeted_most(username, limit, min_count=0):
     return
 
 
+def get_max_word(username, limit):
+    word_list = get_list_of_words(username, limit)
+    word_dic = word_count_dic(word_list)
+    max_word = ""
+    max_count = 0
+    for key in word_dic:
+        if word_dic[key] > max_count:
+            max_count = word_dic[key]
+            max_word = key
+
+    return max_word
+
+
 def upload_wordcloud_to_twitter(username, limit, min_count):
     cloud.create_cloud_png(username, limit, min_count)
     file_name = "wordCloud/" + username + ".png"
-
     media = api.media_upload(file_name)
+    hashtag = get_max_word(username, limit)
+
     text = "The most common words tweeted by @" + username + " in their last " + str(limit) + \
-           " tweets! See anything interesting?"
+           " tweets! See anything interesting? #" + hashtag
 
     api.update_status(status=text, media_ids=[media.media_id])
-    
