@@ -17,7 +17,11 @@ common_words = ['the', 'are', 'and', 'this', 'that', 'from', 'they', 'all', 'has
                 'thats', 'what', 'way', 'heres', 'some', 'those', 'because', 'other',
                 'them', 'sure', 'into', 'than', 'ive', 'had', 'let', 'after', 'our',
                 'there', 'about', 'out', 'also', 'back', 'his', 'her', 'even', 'any', 
-                'very', 'could', 'lot', 'them', 'would','should', 'every', 'more']
+                'very', 'could', 'lot', 'them', 'would','should', 'every', 'more',
+                'most', 'many', 'just','which','want', 'including', 'else', 'these',
+                'wont', 'totally','knows','really','anything','everything', 'well', 'one',
+                'going', 'doing','need', 'didnt', 'thing', 'make', 'cant', 'real', 'look',
+                'know']
 
 
 def tweet_weather_for_today():
