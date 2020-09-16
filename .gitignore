@@ -5,3 +5,5 @@ venv
 /main.pyc
 /tweet.pyc
 wordCloud
+/.vscode
+python-twitter
