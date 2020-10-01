@@ -8,7 +8,7 @@ from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 
 import matplotlib.pyplot as plt
 
-
+# Creates word cloud of a twitter user, and stores it in wordCloud/{username}.png
 def create_cloud_png(username, limit, min_count):
     word_list = tweet.get_list_of_words(username, limit)
 
@@ -29,6 +29,3 @@ def create_cloud_png(username, limit, min_count):
 
    # plt.savefig(file_name)
     print("Word Cloud created successfully for " + username)
-
-
-

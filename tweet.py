@@ -30,6 +30,7 @@ def tweet_weather_for_today():
     api.update_status(today_weather)
 
 
+# returns true if character is [@, a-z, A-Z, 0-9]
 def filter_word(character):
     if character == '@':
         return True
@@ -38,7 +39,8 @@ def filter_word(character):
 
 
 # takes string as input
-# returns alphanumeric string
+# returns alphanumeric string 
+# deletes all punctuation except for @
 def strip_word(word):
     if word == '':
         return word
@@ -65,7 +67,6 @@ def get_list_of_words(username, number_of_tweets):
         if '://' in word:  # removes https://
             word_list[i] = ''
         elif '&amp' in word:
-            # print("Removing word: " + word)
             word_list[i] = ''
         else:
             # strips word of all characters not alphanumeric
@@ -157,6 +158,7 @@ def create_csv_words_tweeted_most(username, limit, min_count=0):
     return
 
 
+# Returns the word that has the highest frequency
 def get_max_word(username, limit):
     word_list = get_list_of_words(username, limit)
     word_dic = word_count_dic(word_list)
@@ -170,6 +172,8 @@ def get_max_word(username, limit):
     return max_word
 
 
+# Creates a wordcloud of tweets using cloud.py module
+# Uploads that wordcloud to twitter, along with some text
 def upload_wordcloud_to_twitter(username, limit, min_count):
     cloud.create_cloud_png(username, limit, min_count)
     file_name = "wordCloud/" + username + ".png"

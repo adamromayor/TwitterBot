@@ -7,3 +7,4 @@ venv
 wordCloud
 /.vscode
 python-twitter
+/.DS_Store

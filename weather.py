@@ -4,6 +4,8 @@ import math
 from tokens import *
 
 
+# returns string of weather for the week
+# changing lat an lon will change location of weather
 def get_weather():
     base_url = "http://api.openweathermap.org/data/2.5/onecall?"
     lat = "37.3382"
